@@ -34,9 +34,8 @@ def fix_linear_simulator(X, mcau=30, n=5000, cau=range(30)):
     Kin = X_cau@X_cau.T
     
     for i in range(3):
-        beta = (np.random.randn(mcau)*sigma_g/mcau).reshape(-1,mcau)
-        print(X_cau.shape)
-        y = X_cau@beta.T
+        beta = (np.random.randn(mcau)*sigma_g/mcau)
+        y = X_cau@beta
         savepath = f'/u/flashscratch/b/boyang19/CS269/code/Parallel-SHAP/simulations/linear/m{m}/mcau_{mcau}_n_{n}_sim_{i}.pheno'
         dir_creation(savepath)
         saveparam = f'/u/flashscratch/b/boyang19/CS269/code/Parallel-SHAP/simulations/linear/m{m}/mcau_{mcau}_n_{n}_sim_{i}.beta'
