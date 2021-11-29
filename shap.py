@@ -30,6 +30,8 @@ from sklearn import preprocessing
 from sklearn.ensemble import GradientBoostingRegressor 
 from scipy.stats import entropy
 from sklearn.preprocessing import LabelEncoder
+# from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 
 
 
@@ -72,7 +74,8 @@ class DistSHAP:
         return cross_validate(clf, X, y, cv=3,n_jobs=-1, return_train_score=False, scoring='neg_log_loss')['test_score'].mean()
 
     def varVal(self, X, y):
-        regr = GradientBoostingRegressor(n_estimators=20)
+        regr = Ridge(alpha=1.0)
+        # regr = GradientBoostingRegressor(n_estimators=20)
         return cross_validate(regr, X, y, cv=3,n_jobs=-1, return_train_score=False, scoring='explained_variance')['test_score'].mean()
 
 
@@ -150,3 +153,12 @@ class DistSHAP:
             ax.set_title('SHAP')
             if save:
                 fig.savefig(path+f'/SHAP_{dataname}.pdf',bbox_inches='tight')
+
+
+
+if __name__ == "__main__":
+    X = np.loadtxt('/u/flashscratch/b/boyang19/CS269/code/Parallel-SHAP/simulations/Data/X_50.txt')
+    y = np.loadtxt('/u/flashscratch/b/boyang19/CS269/code/Parallel-SHAP/simulations/linear/m50/mcau_30_n_5000_sim_0.pheno')
+    SHAP = DistSHAP(X, y, ytype='quat')
+    feat_imp = SHAP.ParallSampler()
+    print(feat_imp)
